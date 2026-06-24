@@ -1,9 +1,9 @@
 #!/bin/bash
-# Rotorflight Lua Ethos Suite Radio Updater Launcher
+# Wingflight Lua Ethos Suite Radio Updater Launcher
 # This script makes it easy to run the updater on Linux/macOS
 
 echo "========================================"
-echo "Rotorflight Radio Updater"
+echo "Wingflight Radio Updater"
 echo "========================================"
 echo ""
 

@@ -1,8 +1,8 @@
-# Rotorflight Radio Updater
+# Wingflight Radio Updater
 
-Windows updater for the Rotorflight Lua Ethos Suite.
+Windows updater for the Wingflight Lua Ethos Suite.
 
-![Rotorflight Radio Updater](https://raw.githubusercontent.com/rotorflight/rotorflight-lua-ethos-suite-updater/master/src/README.png)
+![Wingflight Radio Updater](https://raw.githubusercontent.com/WingFlight/wingflight-lua-ethos-suite-updater/master/src/README.png)
 
 ## Download
 
@@ -13,12 +13,12 @@ Updater binaries are published on GitHub Releases, **but only when**:
 This means the exact binary link can change or be missing on older releases. Use the Releases page to pick the matching version:
 
 ```
-https://github.com/rotorflight/rotorflight-lua-ethos-suite-updater/releases
+https://github.com/WingFlight/wingflight-lua-ethos-suite-updater/releases
 ```
 
 Asset names (when present):
-- Windows: `rotorflight-lua-ethos-suite-updater-<version>-windows-<arch>.zip`
-- macOS: `rotorflight-lua-ethos-suite-updater-<version>-macos-<arch>.zip`
+- Windows: `wingflight-lua-ethos-suite-updater-<version>-windows-<arch>.zip`
+- macOS: `wingflight-lua-ethos-suite-updater-<version>-macos-<arch>.zip`
 - Linux: `updater-ubuntu-latest` (workflow artifacts; not yet attached to releases)
 
 If a release does not include updater assets, the binaries were not rebuilt for that tag. In that case, use the most recent release **that includes** the updater artifacts or build locally (see below).
@@ -35,7 +35,7 @@ Compilation requirements:
 2. Python 3.x on PATH.
 3. PyInstaller installed: `pip install pyinstaller`
 4. From `src`, run: `make.cmd`
-5. Output EXE: `rotorflight-lua-ethos-suite-updater.exe`
+5. Output EXE: `wingflight-lua-ethos-suite-updater.exe`
 
 Optional build inputs:
 

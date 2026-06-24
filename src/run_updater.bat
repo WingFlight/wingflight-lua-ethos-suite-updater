@@ -1,9 +1,9 @@
 @echo off
-REM Rotorflight Lua Ethos Suite Radio Updater Launcher
+REM Wingflight Lua Ethos Suite Radio Updater Launcher
 REM This batch file makes it easy to run the updater on Windows
 
 echo ========================================
-echo Rotorflight Radio Updater
+echo Wingflight Radio Updater
 echo ========================================
 echo.
 

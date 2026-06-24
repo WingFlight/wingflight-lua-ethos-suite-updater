@@ -1,7 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(Get-ChildItem -Path \"c:\\\\GitHub\\\\rotorflight-lua-ethos-suite-updater\" -Recurse -Force)",
+      "Bash(Get-ChildItem -Path \"c:\\\\GitHub\\\\wingflight-lua-ethos-suite-updater\" -Recurse -Force)",
       "Bash(Select-Object FullName)",
       "Bash(Sort-Object FullName)"
     ]

@@ -44,7 +44,7 @@ def main() -> int:
         (512, 1024),
     ]
 
-    with tempfile.TemporaryDirectory(prefix="rfsuite-icon-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="wfsuite-icon-") as tmp:
         iconset = Path(tmp) / "icon.iconset"
         iconset.mkdir(parents=True, exist_ok=True)
 

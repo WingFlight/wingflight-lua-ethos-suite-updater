@@ -15,13 +15,13 @@ VSVersionInfo(
       StringTable(
         '040904B0',
         [
-          StringStruct('CompanyName', 'Rotorflight'),
-          StringStruct('FileDescription', 'Rotorflight Lua Ethos Suite Updater'),
+          StringStruct('CompanyName', 'Wingflight'),
+          StringStruct('FileDescription', 'Wingflight Lua Ethos Suite Updater'),
           StringStruct('FileVersion', '{FILEVER_STR}'),
-          StringStruct('InternalName', 'rotorflight-lua-ethos-suite-updater'),
-          StringStruct('LegalCopyright', 'Copyright (C) 2025 Rotorflight Project'),
-          StringStruct('OriginalFilename', 'rotorflight-lua-ethos-suite-updater.exe'),
-          StringStruct('ProductName', 'Rotorflight Lua Ethos Suite Updater'),
+          StringStruct('InternalName', 'wingflight-lua-ethos-suite-updater'),
+          StringStruct('LegalCopyright', 'Copyright (C) 2025 Wingflight Project'),
+          StringStruct('OriginalFilename', 'wingflight-lua-ethos-suite-updater.exe'),
+          StringStruct('ProductName', 'Wingflight Lua Ethos Suite Updater'),
           StringStruct('ProductVersion', '{PRODVER_STR}')
         ]
       )

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Rotorflight Lua Ethos Suite Radio Updater
+Wingflight Lua Ethos Suite Radio Updater
 ==========================================
-A GUI tool to automatically update Rotorflight Lua Ethos Suite on an Ethos radio
+A GUI tool to automatically update Wingflight Lua Ethos Suite on an Ethos radio
 from the latest GitHub master branch.
 
 Features:
@@ -79,11 +79,11 @@ else:
 
 
 # Constants
-GITHUB_REPO_URL = "https://github.com/rotorflight/rotorflight-lua-ethos-suite"
-GITHUB_API_URL = "https://api.github.com/repos/rotorflight/rotorflight-lua-ethos-suite"
+GITHUB_REPO_URL = "https://github.com/WingFlight/wingflight-lua-ethos-suite"
+GITHUB_API_URL = "https://api.github.com/repos/WingFlight/wingflight-lua-ethos-suite"
 ETHOS_VID = 0x0483
 ETHOS_PID = 0x5750
-TARGET_NAME = "rfsuite"
+TARGET_NAME = "wfsuite"
 ETHOS_MANIFEST_NAME = "ethos_lua_manifest.json"
 DEFAULT_LOCALE = "en"
 AVAILABLE_LOCALES = ["en", "de", "es", "fr", "it", "nl", "pt-br", "no", "cs", "pl", "he", "zh-cn"]
@@ -93,8 +93,8 @@ DOWNLOAD_RETRY_DELAY = 2
 COPY_SETTLE_SECONDS = 0.03
 TS_SLACK_SECONDS = 2.0
 CACHE_DIRNAME = "cache"
-LOGO_URL = "https://raw.githubusercontent.com/rotorflight/rotorflight-lua-ethos-suite-updater/master/src/logo.png"
-UPDATER_INFO_URL = "https://github.com/rotorflight/rotorflight-lua-ethos-suite-updater/releases"
+LOGO_URL = "https://raw.githubusercontent.com/WingFlight/wingflight-lua-ethos-suite-updater/master/src/logo.png"
+UPDATER_INFO_URL = "https://github.com/WingFlight/wingflight-lua-ethos-suite-updater/releases"
 def _get_app_dir():
     if getattr(sys, "frozen", False):
         return Path(sys.executable).resolve().parent
@@ -105,24 +105,24 @@ APP_DIR = _get_app_dir()
 def _get_work_dir():
     # Keep runtime files out of the current working directory on macOS/Linux.
     if sys.platform == "darwin":
-        return Path.home() / "Library" / "Application Support" / "rfsuite-updater"
+        return Path.home() / "Library" / "Application Support" / "wfsuite-updater"
     if sys.platform.startswith("linux"):
-        return Path.home() / ".local" / "share" / "rfsuite-updater"
+        return Path.home() / ".local" / "share" / "wfsuite-updater"
     if sys.platform == "win32":
         # In onefile builds APP_DIR can be a deep temp extraction path; keep this short.
         base = Path(os.environ.get("LOCALAPPDATA") or tempfile.gettempdir())
-        return base / "rfsuite_updater_work"
-    return APP_DIR / "rfsuite_updater_work"
+        return base / "wfsuite_updater_work"
+    return APP_DIR / "wfsuite_updater_work"
 
 WORK_DIR = _get_work_dir()
 try:
     WORK_DIR.mkdir(parents=True, exist_ok=True)
 except Exception:
-    WORK_DIR = Path(tempfile.gettempdir()) / "rfsuite_updater_work"
+    WORK_DIR = Path(tempfile.gettempdir()) / "wfsuite_updater_work"
     WORK_DIR.mkdir(parents=True, exist_ok=True)
 UPDATER_SETTINGS_FILE = str(WORK_DIR / "updater_settings.json")
 
-UPDATER_LOCK_FILE = str(WORK_DIR / "rfsuite_updater.lock")
+UPDATER_LOCK_FILE = str(WORK_DIR / "wfsuite_updater.lock")
 
 
 def _ensure_work_dir():
@@ -887,7 +887,7 @@ class UpdaterGUI:
     
     def __init__(self, root):
         self.root = root
-        self.root.title("Rotorflight Lua Ethos Suite Updater")
+        self.root.title("Wingflight Lua Ethos Suite Updater")
         self.root.geometry("800x800")
         self.root.resizable(False, False)
         
@@ -962,14 +962,14 @@ class UpdaterGUI:
 
         title_label = tk.Label(
             text_frame,
-            text="Rotorflight Lua Ethos Suite Updater",
+            text="Wingflight Lua Ethos Suite Updater",
             font=("Arial", 16, "bold"),
             bg=header_bg,
             fg=header_fg
         )
         title_label.pack(anchor=tk.W)
 
-        subtitle_text = "Open-source Helicopter flight controller"
+        subtitle_text = "Open-source Fixed-Wing flight controller"
 
         # Right side: logo with tagline overlay (logo loads async)
         logo_frame = tk.Frame(title_frame, bg=header_bg, width=340, height=80)
@@ -1030,7 +1030,7 @@ class UpdaterGUI:
                 req = Request(LOGO_URL, headers={'User-Agent': 'Mozilla/5.0'})
                 with self.urlopen_insecure(req, timeout=10) as response:
                     logo_bytes = response.read()
-                tmp_logo = WORK_DIR / "rfsuite_logo.png"
+                tmp_logo = WORK_DIR / "wfsuite_logo.png"
                 with open(tmp_logo, "wb") as f:
                     f.write(logo_bytes)
                 self.root.after(0, lambda: set_logo_image(tmp_logo))
@@ -1400,7 +1400,7 @@ class UpdaterGUI:
         filename = filedialog.asksaveasfilename(
             title="Save Updater Log",
             defaultextension=".txt",
-            initialfile="rfsuite_updater_log.txt",
+            initialfile="wfsuite_updater_log.txt",
             filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
         )
         if not filename:
@@ -2180,7 +2180,7 @@ class UpdaterGUI:
             for locale in AVAILABLE_LOCALES:
                 ensure_locale(locale)
                 display_name = f"{display_prefix} {version}"
-                asset_name = f"rotorflight-lua-ethos-suite-{version}-{locale}.zip"
+                asset_name = f"wingflight-lua-ethos-suite-{version}-{locale}.zip"
                 asset_url = self._get_url_by_name(asset_name, assets)
                 entry_locale = locale
                 entry_display = display_name
@@ -2191,7 +2191,7 @@ class UpdaterGUI:
                 else:
                     is_asset = False
                     if locale != DEFAULT_LOCALE:
-                        fallback_name = f"rotorflight-lua-ethos-suite-{version}-{DEFAULT_LOCALE}.zip"
+                        fallback_name = f"wingflight-lua-ethos-suite-{version}-{DEFAULT_LOCALE}.zip"
                         asset_url = self._get_url_by_name(fallback_name, assets)
                         if asset_url:
                             self.log(f"⚠ Locale '{locale}' asset not found for {version}; using {DEFAULT_LOCALE}")
@@ -2375,7 +2375,7 @@ class UpdaterGUI:
         sparse_file = os.path.join(cache_repo, ".git", "info", "sparse-checkout")
         os.makedirs(os.path.dirname(sparse_file), exist_ok=True)
         with open(sparse_file, "w", encoding="utf-8") as f:
-            f.write("src/rfsuite/\n")
+            f.write("src/wfsuite/\n")
             f.write(".vscode/scripts/\n")
             f.write("bin/sound-generator/soundpack/\n")
 
@@ -2411,7 +2411,7 @@ class UpdaterGUI:
         os.makedirs(dest_dir, exist_ok=True)
 
         staged_paths = [
-            "src/rfsuite",
+            "src/wfsuite",
             ".vscode/scripts",
             "bin/sound-generator/soundpack",
         ]
@@ -2419,7 +2419,7 @@ class UpdaterGUI:
             src_path = os.path.join(cache_repo, rel)
             dst_path = os.path.join(dest_dir, rel)
             if not os.path.exists(src_path):
-                if rel == "src/rfsuite":
+                if rel == "src/wfsuite":
                     self.log(f"⚠ Missing required path in cache: {rel}")
                     return False
                 self.log(f"⚠ Optional path missing in cache: {rel}")
@@ -2511,7 +2511,7 @@ class UpdaterGUI:
             return False
 
     def locate_source_dir(self, extract_dir):
-        """Locate the rfsuite source directory in extracted content."""
+        """Locate the wfsuite source directory in extracted content."""
         layout = self.detect_source_layout(extract_dir)
         if layout:
             return layout["source_dir"]
@@ -2573,11 +2573,11 @@ class UpdaterGUI:
         parts = [p for p in rel.split("/") if p]
 
         if parts[-2:] == ["scripts", TARGET_NAME]:
-            return "scripts/rfsuite"
+            return "scripts/wfsuite"
         if parts[-2:] == ["src", TARGET_NAME]:
-            return "src/rfsuite"
+            return "src/wfsuite"
         if parts and parts[-1] == TARGET_NAME:
-            return "rfsuite"
+            return "wfsuite"
         if os.path.isfile(os.path.join(source_dir, ETHOS_MANIFEST_NAME)):
             return "ETHOS package root"
         return "app root"
@@ -2927,7 +2927,7 @@ class UpdaterGUI:
             self.log(f"Version suffix for main.lua: {version_suffix}")
             
             _ensure_work_dir()
-            temp_dir = tempfile.mkdtemp(prefix="rfsuite-update-", dir=str(WORK_DIR))
+            temp_dir = tempfile.mkdtemp(prefix="wfsuite-update-", dir=str(WORK_DIR))
             zip_path = None
 
             # For current master, prefer sparse checkout to avoid full repo download.
@@ -2936,7 +2936,7 @@ class UpdaterGUI:
             if version_type == VERSION_MASTER and version_name == "master":
                 self.set_status("Fetching master via git...")
                 self.update_progress(0, "Fetching master via git...")
-                self.log("Git sparse checkout: src/rfsuite/, .vscode/scripts/, bin/sound-generator/soundpack/")
+                self.log("Git sparse checkout: src/wfsuite/, .vscode/scripts/, bin/sound-generator/soundpack/")
                 repo_dir = os.path.join(temp_dir, "repo")
                 if not self.sparse_checkout_master(repo_dir, locale):
                     repo_dir = None
@@ -3155,11 +3155,11 @@ class UpdaterGUI:
             else:
                 self.log(f"Installed version suffix: {version_suffix}")
             self.log("You can now disconnect your radio and restart it.")
-            self.log("The new Rotorflight Lua Ethos Suite is ready to use.")
+            self.log("The new Wingflight Lua Ethos Suite is ready to use.")
             
             messagebox.showinfo(
                 "Update Complete",
-                "Rotorflight Lua Ethos Suite has been updated successfully!\n\n"
+                "Wingflight Lua Ethos Suite has been updated successfully!\n\n"
                 "You can now disconnect and restart your radio."
             )
             
