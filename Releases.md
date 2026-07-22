@@ -1,3 +1,9 @@
+## 0.0.5
+
+- Development channel can now install directly from any repository branch, not just master
+- Development channel now lists open pull requests (including forks) as installable options
+- Version list no longer fails to load entirely if a single GitHub API call (releases, branches, or pull requests) times out
+
 ## 0.0.4
 
 - Version bump for release alignment; no updater-relevant changes this cycle.
