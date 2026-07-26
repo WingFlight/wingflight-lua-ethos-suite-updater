@@ -2,7 +2,7 @@
 setlocal
 cd /d %~dp0
 
-if not defined UPDATER_VERSION set UPDATER_VERSION=0.0.5
+if not defined UPDATER_VERSION set UPDATER_VERSION=0.0.6
 
 echo [1/6] Checking for pyinstaller...
 pyinstaller --version >nul 2>&1

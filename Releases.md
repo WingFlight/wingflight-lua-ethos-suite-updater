@@ -1,3 +1,7 @@
+## 0.0.6
+
+- Version bump for release alignment; no updater-relevant changes this cycle.
+
 ## 0.0.5
 
 - Development channel can now install directly from any repository branch, not just master
