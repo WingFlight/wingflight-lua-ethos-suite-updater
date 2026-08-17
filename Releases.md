@@ -1,3 +1,7 @@
+## 0.0.12
+
+- Version bump for release alignment; no updater-relevant changes this cycle.
+
 ## 0.0.11
 
 - Refresh updater logos and bundled README artwork.
