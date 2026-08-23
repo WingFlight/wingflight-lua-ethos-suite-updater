@@ -1,3 +1,7 @@
+## 0.0.14
+
+- Version bump for release alignment; no updater-relevant changes this cycle.
+
 ## 0.0.13
 
 - Version bump for release alignment; no updater-relevant changes this cycle.
