@@ -1,3 +1,7 @@
+## 0.0.15
+
+- Clean up unintended line-ending churn accidentally introduced in a previous version bump.
+
 ## 0.0.14
 
 - Version bump for release alignment; no updater-relevant changes this cycle.
