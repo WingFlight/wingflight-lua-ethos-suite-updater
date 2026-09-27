@@ -716,7 +716,7 @@ class RadioInterface:
 
     def _find_radio_volume_by_markers(self, removable_only=True):
         """Find a removable volume that matches known Ethos markers."""
-        def has_marker_combo(root):
+        def has_marker_combo(root, removable):
             radio_bin = os.path.isfile(os.path.join(root, "radio.bin"))
             models_dir = os.path.isdir(os.path.join(root, "models"))
             bitmaps_dir = os.path.isdir(os.path.join(root, "bitmaps"))
@@ -724,7 +724,8 @@ class RadioInterface:
                 return True
             if radio_bin and bitmaps_dir:
                 return True
-            if models_dir and bitmaps_dir:
+            # Folders alone are too weak to trust on a fixed disk (e.g. C:\).
+            if models_dir and bitmaps_dir and removable:
                 return True
             return False
 
@@ -733,11 +734,11 @@ class RadioInterface:
                 return None
             for drive in win32api.GetLogicalDriveStrings().split('\x00')[:-1]:
                 try:
-                    dtype = win32file.GetDriveType(drive)
-                    if removable_only and dtype != win32file.DRIVE_REMOVABLE:
+                    removable = win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE
+                    if removable_only and not removable:
                         continue
                     drive_root = drive if drive.endswith("\\") else drive + "\\"
-                    if has_marker_combo(drive_root):
+                    if has_marker_combo(drive_root, removable):
                         return drive_root
                 except Exception:
                     continue
@@ -748,17 +749,19 @@ class RadioInterface:
                 if root in seen:
                     continue
                 seen.add(root)
-                if removable_only and not self._is_removable_mount(root):
+                removable = self._is_removable_mount(root)
+                if removable_only and not removable:
                     continue
-                if has_marker_combo(root):
+                if has_marker_combo(root, removable):
                     return root
             for root in self._iter_lsblk_mounts():
                 if root in seen:
                     continue
                 seen.add(root)
-                if removable_only and not self._is_removable_mount(root):
+                removable = self._is_removable_mount(root)
+                if removable_only and not removable:
                     continue
-                if has_marker_combo(root):
+                if has_marker_combo(root, removable):
                     return root
             return None
 
@@ -838,6 +841,20 @@ class RadioInterface:
         
         return None
 
+    def _has_ethos_marker(self, root):
+        """True if root holds a file Ethos writes to its own volumes."""
+        for marker in ("radio.bin", "radio.cpuid", "sdcard.cpuid", "flash.cpuid"):
+            if os.path.isfile(os.path.join(root, marker)):
+                return True
+        return False
+
+    def _may_hold_radio_scripts(self, root, removable):
+        """A bare scripts folder is only trusted on removable media or a marked Ethos volume.
+
+        Without this, a fixed-disk folder such as C:\\scripts is taken for the radio.
+        """
+        return removable or self._has_ethos_marker(root)
+
     def find_scripts_dir_on_drives(self, removable_only=True):
         """Fallback: scan drives for scripts folder."""
         if sys.platform == 'win32':
@@ -845,8 +862,10 @@ class RadioInterface:
                 return None
             for drive in win32api.GetLogicalDriveStrings().split('\x00')[:-1]:
                 try:
-                    dtype = win32file.GetDriveType(drive)
-                    if removable_only and dtype != win32file.DRIVE_REMOVABLE:
+                    removable = win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE
+                    if removable_only and not removable:
+                        continue
+                    if not self._may_hold_radio_scripts(drive, removable):
                         continue
                     for folder in ("scripts", "script"):
                         scripts = os.path.join(drive, folder)
@@ -863,12 +882,22 @@ class RadioInterface:
             return None
         else:
             for root in self._iter_mount_roots():
+                removable = self._is_removable_mount(root)
+                if removable_only and not removable:
+                    continue
+                if not self._may_hold_radio_scripts(root, removable):
+                    continue
                 for folder in ("scripts", "script"):
                     scripts = os.path.join(root, folder)
                     if os.path.isdir(scripts):
                         return os.path.normpath(scripts)
             # Linux fallback: inspect lsblk for removable mounts
             for root in self._iter_lsblk_mounts():
+                removable = self._is_removable_mount(root)
+                if removable_only and not removable:
+                    continue
+                if not self._may_hold_radio_scripts(root, removable):
+                    continue
                 for folder in ("scripts", "script"):
                     scripts = os.path.join(root, folder)
                     if os.path.isdir(scripts):
