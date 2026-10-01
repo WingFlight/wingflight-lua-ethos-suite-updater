@@ -1,3 +1,9 @@
+## 0.0.22
+
+- Wait up to 60 s for the radio drive to mount after switching it to storage mode, instead of about 12 s, so a slow USB mount no longer fails with "Radio drive not found".
+- Only accept a scripts folder on a fixed disk when the drive carries an Ethos marker, so a folder such as C:\scripts is no longer mistaken for the radio.
+- Always bundle HID support into the updater builds.
+
 ## 0.0.21
 
 - Version bump for release alignment; no updater-relevant changes this cycle.
