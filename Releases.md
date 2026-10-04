@@ -1,3 +1,7 @@
+## 0.0.23
+
+- Version bump for release alignment; no updater-relevant changes this cycle.
+
 ## 0.0.22
 
 - Wait up to 60 s for the radio drive to mount after switching it to storage mode, instead of about 12 s, so a slow USB mount no longer fails with "Radio drive not found".
