@@ -120,13 +120,21 @@ jobs:
 
       - name: Verify HID module was bundled
         shell: bash
+        # Read the onefile archive's table of contents; grepping the binary for
+        # the module name missed it on the macOS 14 (arm64) runner.
         run: |
-          if grep -r -a -q -E 'hid\.(cp[0-9]+-win|cpython-[0-9]+-)' src/dist; then
-            echo "HID module found in build"
-          else
-            echo "::error::hid (hidapi) extension module is missing from the built updater"
-            exit 1
-          fi
+          python - <<'EOF'
+          import glob, os, sys
+          from PyInstaller.archive.readers import CArchiveReader
+          exes = [p for p in glob.glob("src/dist/wingflight-lua-ethos-suite-updater*") if os.path.isfile(p)]
+          if not exes:
+              sys.exit("::error::no onefile updater executable in src/dist")
+          for exe in exes:
+              found = [n for n in CArchiveReader(exe).toc if n.split("/")[-1].startswith("hid.")]
+              if not found:
+                  sys.exit(f"::error::hid (hidapi) extension module is missing from {exe}")
+              print(f"HID module found in {exe}: {', '.join(found)}")
+          EOF
 
       - name: Package updater (macOS)
         if: runner.os == 'macOS'
