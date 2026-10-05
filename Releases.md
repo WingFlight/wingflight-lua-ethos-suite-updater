@@ -1,3 +1,7 @@
+## 0.0.24
+
+- Version bump for release alignment; no updater-relevant changes this cycle.
+
 ## 0.0.23
 
 - Version bump for release alignment; no updater-relevant changes this cycle.
